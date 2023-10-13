@@ -36,6 +36,8 @@ time_now = datetime.now()
 # Then send me an email to tell me to look up.
 # BONUS: run the code every 60 seconds
 
+
+# Checked if the ISS is close and notify user by sending email
 if iss_latitude > MY_LAT - 5 and iss_latitude < MY_LAT + 5:
   if iss_longitude > MY_LONG - 5 and iss_longitude < MY_LONG + 5:
     if time_now.hour > sunrise or time_now.hour < sunset:
