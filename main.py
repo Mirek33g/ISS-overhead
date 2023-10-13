@@ -1,11 +1,12 @@
 import requests
 from datetime import datetime
 import smtplib
+import time
 
 MY_LAT = 53.480759  # latitude
 MY_LONG = -2.242631  # longitude
 MY_EMAIL = "first.steps.coding@gmail.com"
-MY_PASSWORD = ""  #password
+MY_PASSWORD = ""
 
 response = requests.get(url="http://api.open-notify.org/iss-now.json")
 response.raise_for_status()
@@ -36,24 +37,19 @@ time_now = datetime.now()
 # Then send me an email to tell me to look up.
 # BONUS: run the code every 60 seconds
 
-
 # Checked if the ISS is close and notify user by sending email
-if iss_latitude > MY_LAT - 5 and iss_latitude < MY_LAT + 5:
-  if iss_longitude > MY_LONG - 5 and iss_longitude < MY_LONG + 5:
-    if time_now.hour > sunrise or time_now.hour < sunset:
+while True:
+  time.sleep(60)
+  if MY_LAT - 5 <= iss_latitude >= MY_LAT - 5 and MY_LONG - 5 <= iss_longitude >= MY_LONG - 5:
+    if time_now.hour >= sunrise or time_now.hour <= sunset:
       connection = smtplib.SMTP("smtp.gmail.com")
       connection.starttls()
       connection.login(user=MY_EMAIL, password=MY_PASSWORD)
       connection.sendmail(
           from_addr=MY_EMAIL,
-          to_addrs="mirek.forx@gmail.com",
+          to_addrs=MY_EMAIL,
           msg="Subject: Look Up!\n\nThe ISS is close to your current position."
       )
       connection.close()
-else:
-  print("Not yet")
-
-
-
-
-
+  else:
+    print("Not yet")
